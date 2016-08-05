@@ -38,15 +38,17 @@ void package01(int (*pCostArr)[capacity], int *pItemWeightArr, int *pItemValArr,
 			{
 				if(pItemWeightArr[i]<=packageWeight)
 				{
-					int idx = 0;
+					// 兼容 C语言数组下标从0开始的情况
+					int preWeight = 0;
 					if(pItemWeightArr[i]==packageWeight)
-						idx = packageWeight;
+						preWeight = 0;
 					else
-						idx = j;
+						preWeight = pCostArr[i-1][packageWeight-pItemWeightArr[i]-1];
 					
-					if(pCostArr[i-1][j] < pCostArr[i-1][idx-pItemWeightArr[i]]+pItemValArr[i])
+					// 计算
+					if(pCostArr[i-1][j] < preWeight + pItemValArr[i])
 					{
-						pCostArr[i][j] = pCostArr[i-1][idx-pItemWeightArr[i]]+pItemValArr[i];
+						pCostArr[i][j] = preWeight + pItemValArr[i];
 					}
 					else
 						pCostArr[i][j] = pCostArr[i-1][j];
